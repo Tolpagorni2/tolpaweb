@@ -1,0 +1,43 @@
+---
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import '@fontsource-variable/hanken-grotesk';
+import '@fontsource-variable/hanken-grotesk/wght-italic.css';
+import '@fontsource-variable/source-serif-4';
+import '@fontsource/courier-prime/400.css';
+import '../styles/base.css';
+interface Props { title?: string; description?: string; preview?: boolean; previewMessage?: string; activeNav?: string; }
+const {
+  title = 'tolpagorni thoughts',
+  description = 'A living space for practical thinking, exploration and knowledge development in technology-intensive businesses.',
+  preview = false,
+  previewMessage = "Kit examples, not approved content. Dates and services are not live.",
+  activeNav,
+} = Astro.props;
+const homePath = preview ? '/design-preview' : '/';
+const isHome = Astro.url.pathname.replace(/\/$/, '') === homePath.replace(/\/$/, '');
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#141a40" />
+    {preview && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="icon" type="image/svg+xml" href="/assets/brand/tolpagorni-emblem.svg" />
+    <title>{title}</title>
+  </head>
+  <body id="top">
+    <a class="skip-link" href="#main">Skip to content</a>
+    {preview && <aside class="preview-banner" aria-label="Local design preview">
+      <div class="wrap"><strong>local design preview</strong><span>{previewMessage}</span><a href="/">view public page →</a></div>
+    </aside>}
+    <Navigation preview={preview} activeNav={activeNav} />
+    <main id="main" tabindex="-1"><slot /></main>
+    <Footer entranceHref={isHome ? "#top" : homePath} />
+    <script>
+      import '../scripts/anchor-scroll';
+    </script>
+  </body>
+</html>

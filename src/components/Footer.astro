@@ -1,0 +1,15 @@
+---
+interface Props { entranceHref?: string; }
+const { entranceHref = '#top' } = Astro.props;
+---
+<footer class="site-footer" id="about" aria-labelledby="about-title">
+  <div class="wrap footer-main">
+    <img class="footer-emblem" src="/assets/brand/tolpagorni-emblem.svg" width="64" height="64" alt="" />
+    <div>
+      <h2 class="eyebrow" id="about-title">about the house</h2>
+      <p>tolpagorni thoughts is a knowledge house for practical, field-tested knowledge in technology-intensive businesses.</p>
+    </div>
+    <a class="text-link" href={entranceHref}>back to the entrance <span aria-hidden="true">↑</span></a>
+  </div>
+  <div class="wrap footer-meta"><span>tolpagorni thoughts AB</span><span>thoughts need room to breathe</span></div>
+</footer>

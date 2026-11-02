@@ -1,0 +1,98 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import '../styles/archive.css';
+import { archives, entryPath, kindInfo, publicationDate, type ArchiveKey, type EditorialEntry } from '../lib/editorial-routes';
+interface Props { archive: ArchiveKey; entries: EditorialEntry[]; preview?: boolean; }
+const { archive, entries, preview = false } = Astro.props;
+const config = archives[archive];
+const items = entries.filter(entry => (config.kinds as readonly string[]).includes(entry.data.kind));
+const subjects = [...new Set(items.flatMap(entry => entry.data.subjects))].sort();
+const kinds = [...new Set(items.map(entry => entry.data.kind))];
+const prefix = preview ? '/design-preview' : '';
+---
+<BaseLayout title={`${config.title} · tolpagorni thoughts`} description={config.description} preview={preview} previewMessage="Content review: examples and drafts are excluded from production." activeNav={archive === 'library' ? 'knowledge' : config.title}>
+  <header class="archive-header wrap">
+    <a class="meta text-link archive-breadcrumb" href={preview ? '/design-preview' : '/'}><span aria-hidden="true">←</span> the entrance</a>
+    <div class="archive-header-grid">
+      <p class="eyebrow archive-label">the knowledge space</p>
+      <div class="archive-heading">
+        <h1>{config.title}</h1><p class="archive-description">{config.description}</p>
+        {(archive === 'knowledge' || archive === 'library') && <nav class="archive-subnav" aria-label="Knowledge sections"><ul>
+          <li><a href={`${prefix}/knowledge/`} aria-current={archive === 'knowledge' ? 'page' : undefined}>all knowledge</a></li>
+          <li><a href={`${prefix}/library/`} aria-current={archive === 'library' ? 'page' : undefined}>the library</a></li>
+        </ul></nav>}
+      </div>
+    </div>
+  </header>
+  <section class="archive-section wrap" aria-labelledby="archive-title" data-editorial-archive>
+    <div class="archive-content-grid">
+      {items.length > 0 && <aside class="archive-tools" aria-label="Filter content" data-archive-filters hidden>
+        <div class="archive-tools-inner">
+          <details class="archive-filter-disclosure" data-filter-disclosure open>
+            <summary><span data-filter-summary>filters</span><span class="filter-chevron" aria-hidden="true">⌄</span></summary>
+            <div class="archive-filter-fields">
+          <div class="archive-filter-field"><label for="archive-subject">subject</label><select id="archive-subject" data-subject-filter><option value="">all subjects</option>{subjects.map(subject => <option value={subject}>{subject}</option>)}</select></div>
+          {kinds.length > 1 && <div class="archive-filter-field"><label for="archive-kind">type</label><select id="archive-kind" data-kind-filter><option value="">all types</option>{kinds.map(kind => <option value={kind}>{kindInfo[kind].label}</option>)}</select></div>}
+          <button type="button" class="filter-reset" data-reset-filters disabled>clear filters</button>
+            </div>
+          </details>
+        </div>
+      </aside>}
+      <div class="archive-results">
+        <div class="archive-results-heading"><h2 id="archive-title">{preview ? 'Content for review' : 'Published content'}</h2><p class="meta" role="status" aria-live="polite" data-result-count>{items.length} {items.length === 1 ? 'item' : 'items'}</p></div>
+        {items.length > 0 ? <>
+          <ul class="archive-list">{items.map(entry => <li data-editorial-item data-subjects={JSON.stringify(entry.data.subjects)} data-kind={entry.data.kind}>
+            <article>
+              <div class="meta archive-meta"><span>{kindInfo[entry.data.kind].label}</span>{entry.data.example ? <span class="example-label">example · design only</span> : entry.data.status === 'draft' ? <span class="example-label">draft · content review</span> : entry.data.publishedAt && <time datetime={entry.data.publishedAt}>{publicationDate(entry.data.publishedAt)}</time>}</div>
+              <h3><a href={entryPath(entry, preview)}>{entry.data.title}<span aria-hidden="true"> →</span></a></h3>
+              <p>{entry.data.description}</p>
+              {entry.data.subjects.length > 0 && <p class="meta">{entry.data.subjects.join(' · ')}</p>}
+            </article>
+          </li>)}</ul>
+          <p class="empty-state" data-no-results hidden>No content matches these filters.</p>
+        </> : <p class="empty-state archive-empty">No content has been published in this section yet.</p>}
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+<script>
+  for (const archive of document.querySelectorAll<HTMLElement>('[data-editorial-archive]')) {
+    const filters = archive.querySelector<HTMLElement>('[data-archive-filters]');
+    if (!filters) continue;
+    const subject = archive.querySelector<HTMLSelectElement>('[data-subject-filter]');
+    const kind = archive.querySelector<HTMLSelectElement>('[data-kind-filter]');
+    const items = [...archive.querySelectorAll<HTMLElement>('[data-editorial-item]')];
+    const count = archive.querySelector<HTMLElement>('[data-result-count]');
+    const noResults = archive.querySelector<HTMLElement>('[data-no-results]');
+    const reset = archive.querySelector<HTMLButtonElement>('[data-reset-filters]');
+    const disclosure = archive.querySelector<HTMLDetailsElement>('[data-filter-disclosure]');
+    const summary = archive.querySelector<HTMLElement>('[data-filter-summary]');
+    const narrow = window.matchMedia('(max-width: 899px)');
+    const updateDisclosure = () => { if (disclosure) disclosure.open = !narrow.matches; };
+    updateDisclosure();
+    narrow.addEventListener('change', updateDisclosure);
+    filters.hidden = false;
+    const update = () => {
+      let visible = 0;
+      for (const item of items) {
+        const subjects: string[] = JSON.parse(item.dataset.subjects ?? '[]');
+        item.hidden = Boolean((subject?.value && !subjects.includes(subject.value)) || (kind?.value && kind.value !== item.dataset.kind));
+        if (!item.hidden) visible++;
+      }
+      if (count) count.textContent = `${visible} ${visible === 1 ? 'item' : 'items'}`;
+      if (noResults) noResults.hidden = visible > 0;
+      const active = Number(Boolean(subject?.value)) + Number(Boolean(kind?.value));
+      if (reset) reset.disabled = active === 0;
+      if (summary) summary.textContent = active ? `filters (${active})` : 'filters';
+    };
+    subject?.addEventListener('change', update);
+    kind?.addEventListener('change', update);
+    reset?.addEventListener('click', () => {
+      if (subject) subject.value = '';
+      if (kind) kind.value = '';
+      update();
+      subject?.focus();
+    });
+    update();
+  }
+</script>

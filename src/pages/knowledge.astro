@@ -1,0 +1,6 @@
+---
+import EditorialArchive from '../components/EditorialArchive.astro';
+import { getPublicEditorial } from '../lib/editorial';
+const entries = await getPublicEditorial();
+---
+<EditorialArchive archive="knowledge" entries={entries} />

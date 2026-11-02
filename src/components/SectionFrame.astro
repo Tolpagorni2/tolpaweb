@@ -1,0 +1,16 @@
+---
+interface Props { id: string; label: string; note: string; heading: string; example?: boolean; }
+const { id, label, note, heading, example = false } = Astro.props;
+---
+<section class="editorial-section" id={id} aria-labelledby={`${id}-title`}>
+  <div class="section-grid wrap">
+    <div class="section-label"><span>{label}</span><small>{note}</small></div>
+    <div class="section-content">
+      <div class="section-heading">
+        <h2 id={`${id}-title`}>{heading}</h2>
+        {example && <span class="example-label">example · design only</span>}
+      </div>
+      <slot />
+    </div>
+  </div>
+</section>

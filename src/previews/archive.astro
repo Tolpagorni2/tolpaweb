@@ -1,0 +1,8 @@
+---
+import { getCollection } from 'astro:content';
+import EditorialArchive from '../components/EditorialArchive.astro';
+import type { ArchiveKey } from '../lib/editorial-routes';
+const archive = Astro.url.pathname.split('/').filter(Boolean).at(-1) as ArchiveKey;
+const entries = (await getCollection('editorial')).filter(entry => entry.id !== 'example-draft');
+---
+<EditorialArchive archive={archive} entries={entries} preview />

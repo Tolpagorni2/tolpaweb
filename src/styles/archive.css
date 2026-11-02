@@ -1,0 +1,58 @@
+/* Archive composition follows the article's shared label/content alignment. */
+.archive-header { padding-block: 2rem 2.5rem; border-bottom: 1px solid var(--line); }
+.archive-breadcrumb { gap: .7rem; margin-bottom: 2rem; color: var(--muted); }
+.archive-header-grid, .archive-content-grid { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: 3rem; }
+.archive-label { padding-top: .5rem; font-size: .8rem; }
+.archive-heading { max-width: 62ch; min-width: 0; }
+.archive-heading h1 { margin: 0 0 1rem; }
+.archive-description { font-size: 1.2rem; line-height: 1.6; color: var(--muted); margin-bottom: 0; max-width: 52ch; }
+.archive-subnav { margin-top: 1.5rem; }
+.archive-subnav ul { gap: 1.5rem; }
+.archive-subnav a { color: var(--muted); font: 400 .875rem/1.5 var(--type); padding-block: .5rem; border-bottom: 1px solid transparent; }
+.archive-subnav a[aria-current] { color: var(--accent); border-bottom-color: var(--accent); text-decoration: none; }
+.archive-section { padding-block: 2.5rem 5rem; }
+.archive-tools { min-width: 0; }
+.archive-tools-inner { position: sticky; top: 2rem; }
+.archive-filter-disclosure { margin: 0; padding: 0; border: 0; }
+.archive-filter-disclosure summary { display: flex; justify-content: space-between; color: var(--mint); font-size: .8rem; min-height: 40px; padding-block: .3rem; }
+.archive-filter-disclosure[open] summary { margin-bottom: 1rem; }
+.filter-chevron { font-size: 1.1rem; transform: rotate(-90deg); }
+.archive-filter-disclosure[open] .filter-chevron { transform: none; }
+.archive-filter-field { display: grid; gap: .4rem; margin-bottom: 1.2rem; }
+.archive-filter-field label { font: 400 .8rem/1.5 var(--type); color: var(--muted); }
+.archive-filter-field select { width: 100%; min-width: 0; min-height: 44px; background: var(--night); color: var(--paper); border: 1px solid #697193; padding: .55rem .6rem; font: 400 .8rem/1.5 var(--type); }
+.archive-filter-field select:focus-visible, .filter-reset:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+.filter-reset { border: 0; border-bottom: 1px solid currentColor; background: none; color: var(--glacier); padding: .35rem 0; min-height: 32px; font: 400 .8rem/1.5 var(--type); cursor: pointer; }
+.filter-reset:disabled { color: var(--muted); opacity: .65; border-bottom-color: transparent; cursor: default; }
+.archive-results { grid-column: 2; min-width: 0; max-width: 62ch; }
+.archive-results-heading { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: .5rem 1.5rem; padding-bottom: 1.5rem; }
+.archive-results-heading h2 { font-size: 1.5rem; }
+.archive-results-heading p { margin: 0; font-size: .8rem; }
+.archive-results .archive-list { margin: 0; }
+.archive-results .archive-list > li { padding-block: 1.8rem; }
+.archive-results .archive-list h3 { font-size: clamp(1.4rem, 2.4vw, 1.75rem); }
+.archive-results .archive-list h3 a { text-underline-offset: .2em; }
+.archive-results .archive-list h3 a span { white-space: nowrap; color: var(--glacier); }
+.archive-results .archive-meta { font-size: .8rem; }
+.archive-empty { margin-top: 0; padding-block: 1rem; }
+@media (max-width: 1050px) and (min-width: 900px) {
+  .archive-header-grid, .archive-content-grid { grid-template-columns: 155px minmax(0, 1fr); gap: 2rem; }
+}
+@media (max-width: 899px) {
+  .archive-header-grid, .archive-content-grid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; }
+  .archive-label { margin-bottom: 0; padding-top: 0; }
+  .archive-results { grid-column: 1; }
+  .archive-tools-inner { position: static; border-bottom: 1px solid var(--line); padding-bottom: 1rem; }
+  .archive-filter-fields { display: flex; flex-wrap: wrap; align-items: end; gap: 1rem; }
+  .archive-filter-field { flex: 1 1 160px; margin-bottom: 0; }
+  .filter-reset { margin-bottom: .3rem; }
+}
+@media (max-width: 600px) {
+  .archive-header { padding-block: 1.5rem 2rem; }
+  .archive-breadcrumb { margin-bottom: 1.5rem; }
+  .archive-description { font-size: 1.1rem; }
+  .archive-section { padding-block: 1.8rem 3rem; }
+  .archive-filter-field { flex-basis: 100%; }
+  .archive-results-heading { padding-bottom: 1rem; }
+  .archive-results .archive-list > li { padding-block: 1.5rem; }
+}

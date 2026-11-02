@@ -1,0 +1,45 @@
+---
+interface Props { headings: { slug: string; text: string }[]; }
+const { headings } = Astro.props;
+---
+<div class="article-rail-inner">
+  {headings.length > 0 && <details class="article-contents" data-article-contents open>
+    <summary><span>in this article</span><span class="contents-chevron" aria-hidden="true">⌄</span></summary>
+    <nav aria-label="In this article"><ol>{headings.map((heading, index) => <li><a href={`#${heading.slug}`}><span class="contents-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span><span>{heading.text}</span></a></li>)}</ol></nav>
+  </details>}
+  <a class="text-link article-top-link" href="#top">back to top <span aria-hidden="true">↑</span></a>
+</div>
+<script>
+  const contents = document.querySelector<HTMLDetailsElement>('[data-article-contents]');
+  if (contents) {
+    const narrow = window.matchMedia('(max-width: 899px)');
+    const updateDisclosure = () => { contents.open = !narrow.matches; };
+    updateDisclosure();
+    narrow.addEventListener('change', updateDisclosure);
+    const links = [...contents.querySelectorAll<HTMLAnchorElement>('a')];
+    const headings = links.map(link => document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter((heading): heading is HTMLElement => !!heading);
+    const setCurrent = (id: string) => {
+      for (const link of links) {
+        if (decodeURIComponent(link.hash.slice(1)) === id) link.setAttribute('aria-current', 'location');
+        else link.removeAttribute('aria-current');
+      }
+    };
+    const updateSection = () => {
+      const above = headings.filter(heading => heading.getBoundingClientRect().top <= window.innerHeight * 0.3);
+      const heading = above.at(-1) ?? headings[0];
+      if (heading) setCurrent(heading.id);
+    };
+    let scheduled = false;
+    window.addEventListener('scroll', () => {
+      if (scheduled) return;
+      scheduled = true;
+      requestAnimationFrame(() => { updateSection(); scheduled = false; });
+    }, { passive: true });
+    window.addEventListener('hashchange', () => {
+      let id: string;
+      try { id = decodeURIComponent(location.hash.slice(1)); } catch { return; }
+      if (headings.some(heading => heading.id === id)) setCurrent(id);
+    });
+    updateSection();
+  }
+</script>

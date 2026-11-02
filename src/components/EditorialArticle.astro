@@ -1,0 +1,57 @@
+---
+import { render } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleContents from './ArticleContents.astro';
+import '../styles/article.css';
+import { entryPath, kindInfo, publicationDate, type EditorialEntry } from '../lib/editorial-routes';
+interface Props { entry: EditorialEntry; related?: EditorialEntry[]; preview?: boolean; }
+const { entry, related = [], preview = false } = Astro.props;
+const { Content, headings } = await render(entry);
+const info = kindInfo[entry.data.kind];
+const toc = headings.filter(heading => heading.depth === 2);
+const prefix = preview ? '/design-preview' : '';
+const words = (entry.body ?? '').trim().split(/\s+/).filter(Boolean).length;
+const readingMinutes = Math.max(1, Math.ceil(words / 220));
+const firstParagraph = (entry.body ?? '').trim().split(/\n\s*\n/)[0] ?? '';
+const sharedDescription = firstParagraph.replace(/\s+/g, ' ').trim() === entry.data.description.replace(/\s+/g, ' ').trim();
+const archiveName = info.archive === 'magnus-meets' ? 'magnus meets' : info.archive;
+const hasByline = entry.data.author || entry.data.knowledgeState || (entry.data.publishedAt && !entry.data.example && !(preview && entry.data.status === 'draft'));
+const previewMessage = entry.data.example ? 'Kit example for design review. Not approved client content.' : 'Content review: draft excluded from production until its publication date is confirmed.';
+---
+<BaseLayout title={`${entry.data.title} · tolpagorni thoughts`} description={entry.data.description} preview={preview} previewMessage={previewMessage} activeNav={info.nav}>
+  <article class={`editorial-article kind-${entry.data.kind}`}>
+    <header class="article-header wrap">
+      <a class="meta text-link article-breadcrumb" href={`${prefix}/${info.archive}/`}><span aria-hidden="true">←</span> {archiveName}</a>
+      <div class="article-header-grid">
+        <div class="article-kind"><p class="eyebrow">{info.label}</p><p class="meta">about {readingMinutes} min read</p></div>
+        <div class="article-heading">
+          <h1>{entry.data.title}</h1>
+          <p class="article-deck">{entry.data.description}</p>
+          {hasByline && <dl class="article-byline">
+            {entry.data.author && <div><dt>written by</dt><dd>{entry.data.author}</dd></div>}
+            {entry.data.publishedAt && !entry.data.example && !(preview && entry.data.status === 'draft') && <div><dt>published</dt><dd><time datetime={entry.data.publishedAt}>{publicationDate(entry.data.publishedAt)}</time></dd></div>}
+            {entry.data.knowledgeState && <div><dt>knowledge state</dt><dd>{entry.data.knowledgeState}</dd></div>}
+          </dl>}
+          {entry.data.example ? <p class="article-status"><span class="example-label">example · design only</span></p> : preview && entry.data.status === 'draft' && <p class="article-status"><span class="example-label">draft · publication date pending</span></p>}
+          {entry.data.subjects.length > 0 && <ul class="article-subjects meta" aria-label="Subjects">{entry.data.subjects.map(subject => <li>{subject}</li>)}</ul>}
+        </div>
+      </div>
+    </header>
+    <div class="article-reading-grid wrap">
+      <aside class="article-rail" aria-label="Article navigation"><ArticleContents headings={toc} /></aside>
+      <div class="reading-content">
+        {entry.data.centralQuestion && <aside class="question-panel"><p class="meta">the question</p><p class="question-text">{entry.data.centralQuestion}</p></aside>}
+        {entry.data.whyItIsHere && <aside class="why-note"><p class="meta">why it is here</p><p>{entry.data.whyItIsHere}</p></aside>}
+        {entry.data.kind === 'episode' && <>
+          {entry.data.guests.length > 0 && <p class="meta">with {entry.data.guests.join(', ')}</p>}
+          {entry.data.vimeoId ? <div class="episode-video"><iframe src={`https://player.vimeo.com/video/${entry.data.vimeoId}?dnt=1`} title={entry.data.title} loading="lazy" allow="fullscreen; picture-in-picture" allowfullscreen></iframe></div> : <p class="empty-state">No video is available for this {entry.data.example ? 'example' : 'conversation'}.</p>}
+        </>}
+        <div class:list={["prose", { "prose-shared-deck": sharedDescription }]}><Content /></div>
+        {entry.data.milestones.length > 0 && <section class="article-milestones" aria-labelledby="milestones-title"><h2 id="milestones-title">Milestones</h2><ol class="milestone-list">{entry.data.milestones.map(milestone => <li><span class="meta">{milestone.state}</span><span>{milestone.title}</span><time class="meta" datetime={milestone.date}>{publicationDate(`${milestone.date}T12:00:00Z`)}</time></li>)}</ol></section>}
+        {entry.data.sourceUrl && <p><a class="text-link" href={entry.data.sourceUrl}>visit the original source <span aria-hidden="true">↗</span></a></p>}
+        {related.length > 0 && <section class="related-content" aria-labelledby="related-title"><h2 id="related-title">Related reading</h2><ul>{related.map(item => <li><a href={entryPath(item, preview)}>{item.data.title}</a></li>)}</ul></section>}
+        <footer class="article-end"><span class="article-end-mark" aria-hidden="true">◇</span><p class="meta">tolpagorni thoughts</p><a class="text-link" href={`${prefix}/${info.archive}/`}><span aria-hidden="true">←</span> back to {archiveName}</a></footer>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

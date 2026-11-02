@@ -1,0 +1,51 @@
+{
+  "thought": {
+    "title": "Knowledge travels like a song",
+    "excerpt": "Knowledge is not an isolated object. It lives, changes, and takes new forms as it moves between people, teams, organizations, and situations.",
+    "body": "When knowledge becomes a model, it becomes easier to carry, and easier to detach from the situation where it was created."
+  },
+  "perspective": {
+    "title": "Cambio, by Formafantasma",
+    "description": "A design studio’s long investigation into the timber industry, shown as an exhibition: the material, the supply chains, the people and the open questions, side by side.",
+    "why": "It treats research as the work itself, and lets visitors see how understanding was built, not only what was concluded."
+  },
+  "investigation": {
+    "title": "Replatforming",
+    "question": "What should change, and what should be protected, when the platform underneath a business is replaced?",
+    "milestones": [
+      "The question framed",
+      "First hypotheses published for comment",
+      "Field observations from cases",
+      "A first working model"
+    ]
+  },
+  "episode": {
+    "question": "What should never be replatformed?",
+    "intro": "A conversation with a CTO in industrial technology about what a platform shift quietly removes, and how to notice it in time.",
+    "observations": [
+      "The old system knew things nobody had written down.",
+      "The best question to ask before a migration is what people do around the system, not in it."
+    ]
+  },
+  "question": "When did a framework last make your organisation weaker?",
+  "library": [
+    {
+      "number": "002",
+      "title": "Speed Layers",
+      "description": "To become fast you have to embrace being slow",
+      "kind": "booklet"
+    },
+    {
+      "number": "—",
+      "title": "The Product Perspective",
+      "description": "A conversation in nine cases",
+      "kind": "book"
+    },
+    {
+      "number": "—",
+      "title": "The Chemistry of Knowledge",
+      "description": "How knowledge is developed, validated and deployed",
+      "kind": "foundation essay"
+    }
+  ]
+}

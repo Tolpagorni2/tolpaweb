@@ -1,0 +1,14 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import EditorialArticle from '../components/EditorialArticle.astro';
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('editorial');
+  return entries.filter(entry => entry.id !== 'example-draft').map(entry => ({
+    params: { id: entry.id },
+    props: { entry, related: entries.filter(item => entry.data.related.includes(item.id)) },
+  }));
+}) satisfies GetStaticPaths;
+const { entry, related } = Astro.props;
+---
+<EditorialArticle entry={entry} related={related} preview />
