@@ -6,13 +6,14 @@ import '@fontsource-variable/hanken-grotesk/wght-italic.css';
 import '@fontsource-variable/source-serif-4';
 import '@fontsource/courier-prime/400.css';
 import '../styles/base.css';
-interface Props { title?: string; description?: string; preview?: boolean; previewMessage?: string; activeNav?: string; }
+interface Props { title?: string; description?: string; preview?: boolean; previewMessage?: string; activeNav?: string; hideFooter?: boolean; }
 const {
   title = 'tolpagorni thoughts',
   description = 'A living space for practical thinking, exploration and knowledge development in technology-intensive businesses.',
   preview = false,
   previewMessage = "Kit examples, not approved content. Dates and services are not live.",
   activeNav,
+  hideFooter = false,
 } = Astro.props;
 const homePath = preview ? '/design-preview' : '/';
 const isHome = Astro.url.pathname.replace(/\/$/, '') === homePath.replace(/\/$/, '');
@@ -35,7 +36,7 @@ const isHome = Astro.url.pathname.replace(/\/$/, '') === homePath.replace(/\/$/,
     </aside>}
     <Navigation preview={preview} activeNav={activeNav} />
     <main id="main" tabindex="-1"><slot /></main>
-    <Footer entranceHref={isHome ? "#top" : homePath} />
+    {!hideFooter && <Footer entranceHref={isHome ? "#top" : homePath} />}
     <script>
       import '../scripts/anchor-scroll';
     </script>

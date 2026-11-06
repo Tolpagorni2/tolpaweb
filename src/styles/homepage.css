@@ -1,0 +1,57 @@
+.homepage {
+ --f-display:var(--display); --f-body:var(--body); --f-type:var(--type);
+/* A. entrance */
+.entrance { position: relative; overflow: hidden; min-height: min(820px, 92vh); border-bottom: 1px solid var(--line); display: grid; }
+#sky { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.veil { position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(20, 26, 64, .8) 0%, rgba(20, 26, 64, .55) 38%, rgba(20, 26, 64, 0) 64%); }
+.range { position: absolute; left: 50%; bottom: 0; width: max(112%, 900px); height: auto; transform: translateX(-45%); display: block; pointer-events: none; }
+.range .ink { stroke-dasharray: 1; stroke-dashoffset: 0; opacity: .55; }
+@media (prefers-reduced-motion: no-preference) { .range .ink { animation: draw 3.4s cubic-bezier(.4, 0, .2, 1) both; } }
+
+.entrance .wrap { position: relative; z-index: 2; width: 100%; padding-block: 88px 160px; display: grid; gap: 22px; align-content: start; }
+.ident { display: flex; align-items: center; gap: 14px; }
+.ident .logo { width: 40px; height: 40px; }
+.ident span { font-family: var(--f-display); font-weight: 300; font-size: 13px; letter-spacing: .34em; color: var(--paper); }
+h1 { font-family: var(--f-display); font-style: italic; font-weight: 200; font-size: clamp(30px, 4.2vw, 54px); line-height: 1.1; letter-spacing: .005em; color: color-mix(in srgb, var(--paper) 92%, var(--glacier)); margin: 18px 0 0; max-width: 16ch; text-wrap: balance; text-shadow: 0 2px 24px rgba(10, 12, 40, .6); }
+.purpose { max-width: 44ch; font-size: 16.5px; color: color-mix(in srgb, var(--paper) 82%, var(--muted)); margin: 0; text-shadow: 0 1px 14px rgba(10, 12, 40, .9); }
+.enter { justify-self: start; display: inline-flex; align-items: center; gap: 10px; font-family: var(--f-type); font-size: 15px; color: var(--paper); background: transparent; border: 1px solid color-mix(in srgb, var(--paper) 45%, transparent); padding: 7px 16px; border-radius: 2px; text-decoration: none; margin-top: 6px; }
+.enter:hover { border-color: var(--accent); color: var(--accent); }
+.routes { position: absolute; z-index: 2; right: max(16px, env(safe-area-inset-right, 0px)); bottom: 26px; display: grid; gap: 4px; text-align: right; font-family: var(--f-type); font-size: 13px; }
+.routes .lh { color: var(--muted); font-size: 11.5px; letter-spacing: .1em; text-transform: uppercase; }
+.routes a { color: var(--paper); text-decoration: none; text-shadow: 0 1px 10px rgba(10, 12, 40, .9); }
+.routes a:hover { color: var(--accent); }
+
+
+}
+@keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+.homepage .entrance {background:var(--night) url('/assets/brand/entrance-landscape.png') center bottom / cover no-repeat;}
+.homepage .entrance::after {display:none;}
+.homepage .ident img {filter:invert(95%) sepia(9%) saturate(300%);}
+.homepage .routes a {min-height:24px;}
+@media(max-width:900px) { .homepage .routes {position:relative;right:auto;bottom:auto;text-align:left;padding:0 max(16px, env(safe-area-inset-left, 0px)) 28px;margin-top:-110px;} }
+
+/* Layer order: sky, original mountain pixels, readable copy. */
+.homepage .entrance {
+  min-height:calc(100svh - var(--entrance-chrome-height, 61px));
+  grid-template-rows:1fr auto;
+  isolation:isolate;
+}
+.homepage #sky { z-index:0; opacity:1; mix-blend-mode:normal; mask-image:none; pointer-events:none; }
+.homepage .entrance-foreground {
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+  background:url('/assets/brand/entrance-landscape.png') center bottom / cover no-repeat;
+  mask-image:url('/assets/brand/entrance-foreground-mask.svg');
+  mask-size:cover;
+  mask-position:center bottom;
+  mask-repeat:no-repeat;
+}
+.homepage .veil { z-index:2; }
+.homepage .entrance > .wrap, .homepage .routes { z-index:3; }
+.homepage .entrance > .wrap { padding-block:clamp(40px, 10svh, 88px) 180px; }
+@media(max-width:900px) {
+  .homepage .entrance > .wrap { padding-block:clamp(32px, 7svh, 64px) 32px; }
+  .homepage .routes { position:relative; margin-top:0; right:auto; bottom:auto; text-align:left; padding:0 16px 24px; }
+}

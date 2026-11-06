@@ -1,0 +1,61 @@
+---
+import { stat } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { entryPath, type EditorialEntry } from '../lib/editorial-routes';
+interface Props { entries: EditorialEntry[]; preview?: boolean; }
+const { entries, preview = false } = Astro.props;
+const files = await Promise.all(entries.filter(entry => ['resource', 'publication'].includes(entry.data.kind) && entry.data.downloadFile?.endsWith('.pdf')).map(async entry => ({entry, bytes:(await stat(resolve(process.cwd(),'src/files',entry.data.downloadFile!))).size})));
+const sizeLabel = (bytes:number) => bytes >= 1024*1024 ? `${(bytes / (1024*1024)).toFixed(1)} MB` : `${Math.max(1,Math.round(bytes/1024))} KB`;
+---
+<BaseLayout title="library · tolpagorni thoughts" preview={preview} previewMessage="Library review: examples and drafts are excluded from the public website." activeNav="library">
+  <div class="simple-library wrap">
+    <a class="library-home" href={preview ? '/design-preview' : '/'}>← Home</a>
+    <header class="library-heading"><h1>library</h1><p>Publications, frameworks, tools, and practical resources.</p></header>
+    <div class="library-count meta">{files.length} {files.length===1 ? 'document' : 'documents'}</div>
+    <ul class="document-list">{files.map(({entry,bytes}) => <li>
+      <article class="document-row">
+        <div class="document-symbol" aria-hidden="true"><svg viewBox="0 0 32 40" fill="none"><path d="M6 1h13l9 9v29H1V1h5Z M19 1v10h9" stroke="currentColor" stroke-width="1.2"/></svg><span>PDF</span></div>
+        <div class="document-copy">
+          <h2>{entry.data.title}</h2>
+          {entry.data.author && <p class="document-author">{entry.data.author}</p>}
+          <p class="document-description">{entry.data.description}</p>
+          <p class="document-meta meta"><span>PDF</span>{entry.data.downloadPages && <span>{entry.data.downloadPages} pages</span>}<span>{sizeLabel(bytes)}</span>{preview && entry.data.status==='draft' && <span>draft · review only</span>}</p>
+        </div>
+        <a class="download-button" href={entryPath(entry,preview)} download aria-label={`Download ${entry.data.title} as PDF`}>download PDF <span aria-hidden="true">↓</span></a>
+      </article>
+    </li>)}</ul>
+    {!files.length && <p class="library-empty muted">No files have been published yet.</p>}
+  </div>
+</BaseLayout>
+<style>
+.simple-library { max-width:1080px; padding-block:2.5rem 5rem; }
+.library-home { font:400 .8rem/1.6 var(--type); display:inline-block; padding-block:.4rem; margin-bottom:2.5rem; }
+.library-heading { max-width:65ch; margin-bottom:3rem; }
+h1 { margin:0 0 1rem; font-size:clamp(2.5rem,5vw,3.5rem); }
+.library-heading p { color:var(--muted); font-size:1.1rem; margin:0; }
+.library-count { font-size:.75rem; padding-bottom:1rem; }
+.document-list { padding:0; margin:0; list-style:none; }
+.document-list > li { border-block-start:1px solid var(--line); }
+.document-list > li:last-child { border-block-end:1px solid var(--line); }
+.document-row { display:grid; grid-template-columns:42px minmax(0,1fr) auto; gap:1.5rem; align-items:start; padding-block:2rem; }
+.document-symbol { position:relative; width:34px; margin-top:4px; color:var(--glacier); }
+.document-symbol svg { display:block; width:32px; height:40px; }
+.document-symbol span { position:absolute; top:21px; left:4px; font:400 9px/1 var(--type); letter-spacing:.08em; }
+h2 { font:italic 300 clamp(1.5rem,2.5vw,1.9rem)/1.25 var(--display); text-transform:lowercase; margin:0 0 .6rem; }
+.document-author { font:400 .8rem/1.6 var(--type); color:var(--muted); margin:0 0 1rem; }
+.document-description { margin:0; max-width:55ch; font-size:1rem; }
+.document-meta { display:flex; flex-wrap:wrap; gap:.4rem 1rem; margin:1rem 0 0; font-size:.75rem; }
+.download-button { display:inline-flex; align-items:center; justify-content:space-between; gap:1.5rem; font:400 .8rem/1.6 var(--type); color:var(--paper); text-decoration:none; border:1px solid #697193; padding:.7rem 1rem; min-height:44px; white-space:nowrap; margin-top:3px; }
+.download-button:hover { color:var(--accent); border-color:var(--accent); }
+.library-empty { padding-block:2rem; border-top:1px solid var(--line); }
+@media(max-width:700px) {
+ .simple-library {padding-block:2rem 3rem;}
+ .library-heading {margin-bottom:2rem;}
+ .document-row {grid-template-columns:32px minmax(0,1fr); gap:1rem; padding-block:1.5rem;}
+ .download-button {grid-column:2; justify-self:start; margin-top:.25rem;}
+ .document-symbol {width:28px;}
+ .document-symbol svg {width:27px;height:35px;}
+ .document-symbol span {top:19px;left:3px;font-size:8px;}
+}
+</style>

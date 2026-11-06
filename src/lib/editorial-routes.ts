@@ -10,7 +10,8 @@ export const kindInfo = {
   resource: { label: 'from the library', base: 'library', archive: 'library', nav: 'knowledge' },
   publication: { label: 'a publication', base: 'library', archive: 'library', nav: 'knowledge' },
 } as const;
-export function entryPath(entry: { id: string; data: Pick<EditorialEntry['data'], 'kind'> }, preview = false): string {
+export function entryPath(entry: { id: string; data: Pick<EditorialEntry['data'], 'kind'> & { downloadFile?: string } }, preview = false): string {
+  if (entry.data.downloadFile) return `${preview ? '/design-preview' : ''}/downloads/${encodeURIComponent(entry.data.downloadFile)}`;
   const id = entry.id.split('/').map(encodeURIComponent).join('/');
   return preview ? `/design-preview/content/${id}/` : `/${kindInfo[entry.data.kind].base}/${id}/`;
 }

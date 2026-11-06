@@ -1,0 +1,13 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { getCollection } from 'astro:content';
+import SectionPage from '../components/SectionPage.astro';
+import { standaloneSections } from '../lib/sections';
+import examples from './homepage-examples.json';
+export const getStaticPaths = (async () => {
+  const entries = (await getCollection('editorial')).filter(entry=>entry.id!=='example-draft');
+  return standaloneSections.map(section=>({params:{section},props:{section,entries}}));
+}) satisfies GetStaticPaths;
+const { section, entries } = Astro.props;
+---
+<SectionPage section={section} entries={entries} examples={examples} preview />

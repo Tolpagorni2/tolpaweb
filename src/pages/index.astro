@@ -1,7 +1,5 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Homepage from '../components/Homepage.astro';
-import { getPublicEditorial } from '../lib/editorial';
-const entries = await getPublicEditorial();
 ---
-<BaseLayout><Homepage entries={entries} /></BaseLayout>
+<BaseLayout hideFooter><Homepage /></BaseLayout>

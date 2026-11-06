@@ -4,26 +4,26 @@ const { preview = false, activeNav } = Astro.props;
 const prefix = preview ? '/design-preview' : '';
 const home = preview ? '/design-preview' : '/';
 const pathname = Astro.url.pathname.replace(/^\/design-preview/, '') || '/';
-const inferred = /^\/(knowledge|library|thoughts|perspectives|questions)(\/|$)/.test(pathname) ? 'knowledge'
+const inferred = /^\/(knowledge|library|thoughts|perspectives|questions)(\/|$)/.test(pathname) ? 'library'
   : /^\/(research|research-updates)(\/|$)/.test(pathname) ? 'research'
   : pathname.startsWith('/magnus-meets') ? 'magnus meets' : undefined;
-const active = activeNav ?? inferred;
+const active = activeNav === 'knowledge' ? 'library' : activeNav ?? inferred;
 const links = [
-  { label: 'knowledge', href: `${prefix}/knowledge/` },
+  { label: 'library', href: `${prefix}/library/` },
   { label: 'research', href: `${prefix}/research/` },
   { label: 'magnus meets', href: `${prefix}/magnus-meets/` },
-  { label: 'participate', href: `${home}#participate` },
-  { label: 'about', href: `${home}#about` },
+  { label: 'participate', href: `${prefix}/participate/` },
+  { label: 'about', href: `${prefix}/about/` },
 ];
 ---
-<header class="site-header wrap">
+<header class="site-header"><div class="wrap">
   <a class="identity" href={home} aria-label="tolpagorni thoughts — home">
     <img src="/assets/brand/tolpagorni-emblem.svg" width="44" height="44" alt="" />
-    <span>tolpagorni thoughts</span>
   </a>
-  <nav aria-label="Main navigation"><ul>{links.map(link => <li><a href={link.href} aria-current={active === link.label ? (Astro.url.pathname.replace(/\/$/, '') === link.href.replace(/\/$/, '') ? 'page' : 'location') : undefined}>{link.label}</a></li>)}</ul></nav>
-</header>
+  <nav aria-label="Main navigation"><ul id="menu">{links.map(link => <li><a href={link.href} data-t={link.label} aria-label={link.label} style={`--len: ${link.label.length}ch`} aria-current={active === link.label ? (Astro.url.pathname.replace(/\/$/, '') === link.href.replace(/\/$/, '') ? 'page' : 'location') : undefined}>{link.label}</a></li>)}</ul></nav>
+</div></header>
 <script>
+  import '../scripts/typewriter';
   const navigation = document.querySelector('nav[aria-label="Main navigation"]');
   const updateCurrentLink = () => {
     for (const link of navigation?.querySelectorAll<HTMLAnchorElement>('a') ?? []) {

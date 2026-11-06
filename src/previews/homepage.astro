@@ -1,8 +1,7 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Homepage from '../components/Homepage.astro';
-import examples from './homepage-examples.json';
 ---
-<BaseLayout title="Homepage design preview · tolpagorni thoughts" preview>
-  <Homepage examples={examples} />
+<BaseLayout title="Homepage design preview · tolpagorni thoughts" preview hideFooter>
+  <Homepage preview />
 </BaseLayout>

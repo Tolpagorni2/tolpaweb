@@ -25,3 +25,7 @@ Use `/design-preview/knowledge/` to review all supported knowledge entries and `
 Before publishing, confirm the real text, publication date and source/usage rights; run `npm run check`, `npm test` and `npm run build`. Publication changes require a static rebuild/deployment. Hosting and scheduled builds remain unconfigured.
 
 The selected Chemistry of Knowledge essay is imported as a real draft, not an example. Publication date confirmation is the remaining content dependency. Its text intentionally retains the supplied wording, including original spelling and phrasing.
+
+## Library downloads
+
+The library is a simple file list. Store original PDF files in `src/files/`, then set `downloadFile: your-file.pdf` in the resource Markdown metadata. Library downloads must be PDF files. Preserve Word originals as source material in src/files without linking or copying them into public/. Download entries have no article detail page. Do not put draft files in `public/`: file routes use the same publication gate as public editorial routes. The local/private review has separate review-only download routes. Publishing still requires an approved publication date and a rebuild.

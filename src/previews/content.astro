@@ -4,7 +4,7 @@ import { getCollection } from 'astro:content';
 import EditorialArticle from '../components/EditorialArticle.astro';
 export const getStaticPaths = (async () => {
   const entries = await getCollection('editorial');
-  return entries.filter(entry => entry.id !== 'example-draft').map(entry => ({
+  return entries.filter(entry => entry.id !== 'example-draft' && !entry.data.downloadFile).map(entry => ({
     params: { id: entry.id },
     props: { entry, related: entries.filter(item => entry.data.related.includes(item.id)) },
   }));

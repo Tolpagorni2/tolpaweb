@@ -7,8 +7,10 @@ export default defineConfig({
     hooks: {
       'astro:config:setup': ({ command, injectRoute }) => {
         if (command === 'dev') {
+          injectRoute({ pattern: '/design-preview/downloads/[...file]', entrypoint: './src/previews/download.ts' });
           injectRoute({ pattern: '/design-preview', entrypoint: './src/previews/homepage.astro' });
           injectRoute({ pattern: '/design-preview/content/[...id]', entrypoint: './src/previews/content.astro' });
+          injectRoute({ pattern: '/design-preview/[section]', entrypoint: './src/previews/section.astro' });
           for (const section of ['knowledge', 'research', 'magnus-meets', 'library']) {
             injectRoute({ pattern: `/design-preview/${section}`, entrypoint: './src/previews/archive.astro' });
           }

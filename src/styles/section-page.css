@@ -1,0 +1,19 @@
+.section-page { max-width:800px; padding-block:2.5rem 4rem;  }
+.section-home { margin-bottom:2rem; }
+.section-page .editorial-section { border:0; }
+.section-page .section-grid { display:block; width:100%; padding:0; }
+.section-page .section-label { margin-bottom:1.25rem; }
+.section-page h1 { margin:0; font-size:clamp(2rem,4vw,3rem); }
+.section-page :is(h1,h2,h3) { text-transform:lowercase; }
+.section-page .section-heading { margin-bottom:1.5rem; }
+.section-page .large-copy { font-size:1.15rem; }
+.section-page .perspective-grid { grid-template-columns:minmax(0,1fr); }
+.section-page .perspective-art { display:none; }
+.section-page .question-panel { background:none; border:0; padding:0; }
+.section-page .rhythm-strip { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.section-page .pulse-columns { grid-template-columns:minmax(0,1fr); gap:1.5rem; }
+@media(max-width:600px) { .section-page {padding-block:2rem 3rem;} }
+.section-page .section-label { display:flex; flex-wrap:wrap; align-items:baseline; gap:.4rem 1rem; }
+.section-page .section-label small { max-width:none; margin:0; }
+.section-page .pulse-columns h2 { font:400 .8rem/1.6 var(--type); border-bottom:1px solid var(--line); padding-bottom:.7rem; margin-bottom:1rem; }
+.section-page .pulse-columns h2 .example-label { margin-left:.75rem; }

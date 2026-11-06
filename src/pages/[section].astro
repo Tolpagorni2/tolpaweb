@@ -1,0 +1,12 @@
+---
+import type { GetStaticPaths } from 'astro';
+import SectionPage from '../components/SectionPage.astro';
+import { standaloneSections } from '../lib/sections';
+import { getPublicEditorial } from '../lib/editorial';
+export const getStaticPaths = (async () => {
+  const entries = await getPublicEditorial();
+  return standaloneSections.map(section => ({params:{section},props:{section,entries}}));
+}) satisfies GetStaticPaths;
+const { section, entries } = Astro.props;
+---
+<SectionPage section={section} entries={entries} />

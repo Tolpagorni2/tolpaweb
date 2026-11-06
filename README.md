@@ -78,3 +78,7 @@ Editorial detail pages use a dedicated reading stylesheet: aligned title/body co
 ## Menu-linked page layouts
 
 The knowledge, library, research and conversation archives share an aligned header/list grid, responsive filter controls and result counts. Knowledge/library navigation is available in both directions. Filters support clearing selections and keyboard focus recovery. About and participate currently link to homepage sections. See [the layout review](docs/page-layout-review.md) for coverage, fixes and remaining content dependencies.
+
+### Current page structure
+
+Home is a single fullscreen opening screen. Enter opens `/pulse/`; the direct links open `/latest-thought/`, `/research/`, `/unanswered-question/` and `/magnus-meets/`. Simple standalone pages also serve `/perspective/`, `/participate/` and `/about/`. Research, conversation and library archives retain their existing routes. The repeated cross-page directory has been removed; navigation uses the main menu and Home direct links. Public pages use the publication gate; corresponding example pages are available under `/design-preview/` during development and in the separate access-controlled review snapshot.

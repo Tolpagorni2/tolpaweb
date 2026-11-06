@@ -84,3 +84,31 @@ Final checks, unit tests and five-type content-build integration passed, with cl
 ## Taller entrance and expanded sky
 
 Increased the desktop entrance from 690px to a responsive 840–1020px and the mobile minimum from 650px to 780px. Positioned the transparent mountain artwork lower while retaining its proportions, exposing more of the full-section sky gradient above it. Desktop and 360px/390px mobile review found no horizontal overflow. Astro/TypeScript checks, unit tests and production build passed.
+
+## Simple library and original-file downloads
+
+Removed the Chemistry detail route from both public/review route generation and replaced the review library entry with a direct download of the supplied DOCX original. No PDF was supplied or fabricated. Original bytes match the kit and generated review output exactly. The library has a simple heading and file list with no archive filters or article layout. Public draft files remain absent. Checks, unit tests, content-build integration and public/review builds passed; the integration test now verifies a published download fixture and exclusion of the actual draft file. Local download bytes and 404 for the removed article were verified over HTTP. Updated the existing access-controlled client preview, preserving its audience.
+
+## Supplied entrance picture replacement
+
+Replaced the first-section still with the user-supplied `ChatGPT Image Nov 2, 2026, 06_38_20 PM.png`, copied unchanged as `public/assets/brand/entrance-landscape.png`. Removed the separate mountain SVG from the entrance because the supplied image already includes its mountain lines. Existing canvas lights remain as a subtle transparent screen-blended layer; visibility pause and reduced-motion logic are unchanged. All later sections and menu remain intact. Checked 360px, 390px and 1280px layouts; no overflow. Astro/TypeScript checks, all three tests, and public/review builds passed, including the production leakage guard.
+
+## Fullscreen entrance with protected foreground
+
+Separated the supplied image using a code-native SVG silhouette mask; no image generation or bitmap repainting. The original image remains unchanged. Layer order is canvas sky, opaque original mountain foreground, readability veil, text/links. Both image and mask share cover sizing and bottom-centred positioning. Moving lights cannot overlay the mountain foreground.
+
+The hero now fills 100svh minus the measured menu and optional review banner heights, with ResizeObserver handling wrapping/font loading. On narrow/short screens the content may grow naturally rather than be clipped. At 1280×900, 360×800 and 390×844, the entrance bottom matched the viewport bottom exactly with no document overflow. Mobile direct links remain visible. Compared two sky-region screenshots: pixels changed; compared a mountain-region screenshot across the same interval: bytes remained identical. Keyboard Enter moved focus to pulse-title. Existing reduced-motion static frame and visibility pause code are preserved and source-reviewed; no browser preference emulation available. Checks, all three tests, public build/leakage guard and private-review build passed.
+
+## Opening-only Home and standalone destinations
+
+Moved the former scrolling homepage sections into simple destination pages, reusing the existing research, conversation and file-library pages. Added Pulse, latest thought, perspective, unanswered question, participate and about. Home retains only the fullscreen layered entrance, header and direct links; its footer is hidden so there is no extra section below the opening screen. Enter and the menu now navigate to pages instead of removed anchors. SectionPage uses one H1 and simple single-column reading layout with links to all eight destinations. No editorial text or publication dates were invented.
+
+Astro/TypeScript checks passed with zero diagnostics. All three unit tests and the publication/content integration test passed; public builds retain the leakage guard. The routing harness now checks the opening-only homepage, new gated hubs and direct downloads. Reviewed ten destinations at 1280px, 360px and 390px (30 checks): one H1/main and no overflow. Keyboard Enter opens the Pulse page. Home remains exactly one viewport tall at desktop. A crawl checked 27 local destinations and 380 links without missing routes or fragments. Hero animation/reduced-motion logic remains unchanged. The private snapshot was rebuilt with the new review routes; public builds contain 11 pages and no examples/review routes.
+
+## PDF library release
+
+Converted the user-supplied Word original to a 12-page PDF and visually checked every page. Source text matches Poppler extraction after whitespace and Unicode normalization. The public library now includes the approved article (publication date explicitly supplied as 4 November 2026), with a simple document icon, title/author/description, PDF page count and size, and a download button. Downloads are PDF-only. No article detail page was reintroduced. Astro/TypeScript checks, all three tests, publication/content integration tests and public/review builds passed. Browser keyboard activation downloaded a PDF whose bytes match the served source. Reviewed desktop and 360/390px mobile layouts without overflow. Updated the existing private review with its allowlist preserved.
+
+## Repeated navigation removed and footer alignment
+
+Removed the repeated eight-destination link directory from SectionPage and its unused CSS. Page routes, menu and Home direct links remain. Added a viewport-height flex column shell so main content grows on short pages and the footer stays at the document bottom. Removed arbitrary minimum heights from section pages, the library and archive content. Reviewed six short/long destinations at 1280px, 360px and 390px (18 checks): footer bottom matches the document/viewport bottom, no horizontal overflow, and no repeated directory. Checks and public build/leakage guard passed. Existing reduced-motion behaviour is unchanged.

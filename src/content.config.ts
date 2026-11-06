@@ -16,6 +16,8 @@ const editorial = defineCollection({
     author: z.string().min(1).optional(),
     centralQuestion: z.string().min(1).optional(),
     whyItIsHere: z.string().min(1).optional(),
+    downloadFile: z.string().regex(/^[a-z0-9-]+\.pdf$/, 'Use a PDF filename from src/files.').optional(),
+    downloadPages: z.number().int().positive().optional(),
     sourceUrl: z.url().refine(url => new URL(url).protocol === 'https:', 'Use an HTTPS source URL.').optional(),
     knowledgeState: z.enum(['emerging', 'developing', 'established']).optional(),
     guests: z.array(z.string().min(1)).default([]),

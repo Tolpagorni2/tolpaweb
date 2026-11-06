@@ -2,7 +2,10 @@
 title: The Chemistry of Knowledge
 description: Rethinking how knowledge is developed, validated and deployed in complex organizations
 kind: resource
-status: draft
+downloadFile: the-chemistry-of-knowledge-foundation.pdf
+downloadPages: 12
+status: published
+publishedAt: "2026-11-04T00:00:00+01:00"
 example: false
 author: Magnus Billgren
 subjects:

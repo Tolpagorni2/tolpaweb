@@ -141,6 +141,24 @@ details li { margin-bottom: .6rem; }
 .participation-list li { display: flex; align-items: baseline; gap: 1.3rem; border-top: 1px solid var(--line); padding-block: .85rem; font-size: 1.05rem; }
 .participation-list li:last-child { border-bottom: 1px solid var(--line); }
 .site-footer { background: #101635; }
+.footer-mountains {
+  position: relative;
+  height: clamp(72px, 10vw, 128px);
+  background: var(--night);
+  pointer-events: none;
+}
+.footer-mountains::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-color: var(--muted);
+  opacity: .42;
+  mask-image: url('/assets/brand/mountain-lines-strip.svg');
+  mask-mode: alpha;
+  mask-repeat: repeat-x;
+  mask-position: center bottom;
+  mask-size: max(100%, 720px) auto;
+}
 .footer-main { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: start; gap: 2rem; padding-block: 3rem; }
 .footer-main p:not(.eyebrow) { max-width: 55ch; color: var(--muted); font-size: .95rem; margin-bottom: 0; }
 .footer-main .eyebrow { margin: 0 0 .8rem; }
@@ -267,3 +285,35 @@ details li { margin-bottom: .6rem; }
   .archive-filters { align-items: stretch; }
   .archive-filters label { width: 100%; }
 }
+
+/* v0.8 shared navigation and footer. */
+.wrap { width: 100%; max-width:1160px; padding-inline:max(16px, env(safe-area-inset-left, 0px)); }
+.site-header { position:sticky; top:0; z-index:9; background:color-mix(in srgb,var(--night) 86%,transparent); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+.site-header > .wrap { display:flex; align-items:center; gap:22px; padding-block:11px; }
+.identity { flex:none; }
+.identity img { width:38px; height:38px; }
+.site-header nav { flex:1; }
+.site-header ul { gap:6px 24px; }
+.site-header nav a { font-size:16px; min-width:var(--len); white-space:pre; }
+.caret { display:inline-block; width:.55em; height:1.05em; background:var(--accent); vertical-align:-2px; margin-left:1px; animation:blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity:0; } }
+
+.site-header { display:block; padding:0; }
+.site-header ul { display:flex; align-items:center; flex-wrap:wrap; list-style:none; margin:0; padding:0; }
+.site-header nav a { display:inline-block; color:var(--paper); text-decoration:none; min-height:28px; padding-block:4px; font-family:var(--type); font-weight:400; font-style:normal; width:calc(var(--len) + .8ch); }
+.site-header nav a:hover, .site-header nav a[aria-current] { color:var(--accent); }
+.site-header nav a[aria-current] { text-decoration:underline dashed; text-underline-offset:4px; }
+@media(max-width:560px) { .site-header > .wrap {gap:16px;align-items:flex-start;} .site-header ul {gap:4px 16px;} .site-header nav a {font-size:15px;} }
+
+@media (prefers-reduced-motion: no-preference) {
+  .site-header nav a { transition: color 180ms ease; }
+}
+
+/* Homepage headings use the lowercase house style; editorial source titles stay intact. */
+.editorial-section :is(h2, h3) { text-transform: lowercase; }
+
+/* Keep the footer at the viewport bottom on short pages, in normal flow on long pages. */
+body { min-height:100svh; display:flex; flex-direction:column; }
+body > main { flex:1 0 auto; width:100%; }
+body > .site-header, body > .preview-banner, body > .site-footer { flex-shrink:0; }
+.archive-section { min-height:0; }

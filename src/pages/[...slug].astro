@@ -5,7 +5,7 @@ import { getPublicEditorial } from '../lib/editorial';
 import { kindInfo } from '../lib/editorial-routes';
 export const getStaticPaths = (async () => {
   const entries = await getPublicEditorial();
-  return entries.map(entry => ({
+  return entries.filter(entry => !entry.data.downloadFile).map(entry => ({
     params: { slug: `${kindInfo[entry.data.kind].base}/${entry.id}` },
     props: { entry, related: entries.filter(item => entry.data.related.includes(item.id)) },
   }));
