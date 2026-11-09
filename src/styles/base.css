@@ -142,22 +142,17 @@ details li { margin-bottom: .6rem; }
 .participation-list li:last-child { border-bottom: 1px solid var(--line); }
 .site-footer { background: #101635; }
 .footer-mountains {
-  position: relative;
-  height: clamp(72px, 10vw, 128px);
   background: var(--night);
   pointer-events: none;
 }
-.footer-mountains::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background-color: var(--muted);
+.footer-mountains img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  filter: invert(1);
+  mix-blend-mode: screen;
   opacity: .42;
-  mask-image: url('/assets/brand/mountain-lines-strip.svg');
-  mask-mode: alpha;
-  mask-repeat: repeat-x;
-  mask-position: center bottom;
-  mask-size: max(100%, 720px) auto;
 }
 .footer-main { display: grid; grid-template-columns: 64px minmax(0, 1fr) auto; align-items: start; gap: 2rem; padding-block: 3rem; }
 .footer-main p:not(.eyebrow) { max-width: 55ch; color: var(--muted); font-size: .95rem; margin-bottom: 0; }

@@ -3,7 +3,9 @@ interface Props { entranceHref?: string; }
 const { entranceHref = '#top' } = Astro.props;
 ---
 <footer class="site-footer" id="about" aria-labelledby="about-title">
-  <div class="footer-mountains" aria-hidden="true"></div>
+  <div class="footer-mountains" aria-hidden="true">
+    <img src="/assets/brand/mountain-footer-wide.png" width="2172" height="724" alt="" decoding="async" />
+  </div>
   <div class="wrap footer-main">
     <img class="footer-emblem" src="/assets/brand/tolpagorni-emblem.svg" width="64" height="64" alt="" />
     <div>
