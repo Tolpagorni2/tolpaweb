@@ -11,7 +11,7 @@ const sizeLabel = (bytes:number) => bytes >= 1024*1024 ? `${(bytes / (1024*1024)
 <BaseLayout title="library · tolpagorni thoughts" preview={preview} previewMessage="Library review: examples and drafts are excluded from the public website." activeNav="library">
   <div class="simple-library wrap">
     <a class="library-home" href={preview ? '/design-preview' : '/'}>← Home</a>
-    <header class="library-heading"><h1>library</h1><p>Publications, frameworks, tools, and practical resources.</p></header>
+    <header class="library-heading"><h1>library</h1><p>The Library is where knowledge is kept and ideas begin. Here you will find books, white papers, films and more, from Tolpagorni and from thinkers we admire. Some are for sale, many are free. Start anywhere and dig deeper.</p></header>
     <div class="library-count meta">{files.length} {files.length===1 ? 'document' : 'documents'}</div>
     <ul class="document-list">{files.map(({entry,bytes}) => <li>
       <article class="document-row">
