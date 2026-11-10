@@ -2,6 +2,7 @@
 import { stat } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import BaseLayout from '../layouts/BaseLayout.astro';
+import chemistryCover from '../assets/library/chemistry-of-knowledge-book.png';
 import { entryPath, type EditorialEntry } from '../lib/editorial-routes';
 interface Props { entries: EditorialEntry[]; preview?: boolean; }
 const { entries, preview = false } = Astro.props;
@@ -14,8 +15,10 @@ const sizeLabel = (bytes:number) => bytes >= 1024*1024 ? `${(bytes / (1024*1024)
     <header class="library-heading"><h1>library</h1><p>The Library is where knowledge is kept and ideas begin. Here you will find books, white papers, films and more, from Tolpagorni and from thinkers we admire. Some are for sale, many are free. Start anywhere and dig deeper.</p></header>
     <div class="library-count meta">{files.length} {files.length===1 ? 'document' : 'documents'}</div>
     <ul class="document-list">{files.map(({entry,bytes}) => <li>
-      <article class="document-row">
-        <div class="document-symbol" aria-hidden="true"><svg viewBox="0 0 32 40" fill="none"><path d="M6 1h13l9 9v29H1V1h5Z M19 1v10h9" stroke="currentColor" stroke-width="1.2"/></svg><span>PDF</span></div>
+      <article class:list={['document-row', {'has-cover': entry.data.downloadFile === 'the-chemistry-of-knowledge-foundation.pdf'}]}>
+        {entry.data.downloadFile === 'the-chemistry-of-knowledge-foundation.pdf' ?
+          <img class="document-cover" src={chemistryCover.src} width={chemistryCover.width} height={chemistryCover.height} alt="" decoding="async" /> :
+          <div class="document-symbol" aria-hidden="true"><svg viewBox="0 0 32 40" fill="none"><path d="M6 1h13l9 9v29H1V1h5Z M19 1v10h9" stroke="currentColor" stroke-width="1.2"/></svg><span>PDF</span></div>}
         <div class="document-copy">
           <h2>{entry.data.title}</h2>
           {entry.data.author && <p class="document-author">{entry.data.author}</p>}
@@ -39,6 +42,8 @@ h1 { margin:0 0 1rem; font-size:clamp(2.5rem,5vw,3.5rem); }
 .document-list > li { border-block-start:1px solid var(--line); }
 .document-list > li:last-child { border-block-end:1px solid var(--line); }
 .document-row { display:grid; grid-template-columns:42px minmax(0,1fr) auto; gap:1.5rem; align-items:start; padding-block:2rem; }
+.document-row.has-cover { grid-template-columns:140px minmax(0,1fr) auto; }
+.document-cover { display:block; width:100%; height:auto; }
 .document-symbol { position:relative; width:34px; margin-top:4px; color:var(--glacier); }
 .document-symbol svg { display:block; width:32px; height:40px; }
 .document-symbol span { position:absolute; top:21px; left:4px; font:400 9px/1 var(--type); letter-spacing:.08em; }
@@ -53,6 +58,7 @@ h2 { font:italic 300 clamp(1.5rem,2.5vw,1.9rem)/1.25 var(--display); text-transf
  .simple-library {padding-block:2rem 3rem;}
  .library-heading {margin-bottom:2rem;}
  .document-row {grid-template-columns:32px minmax(0,1fr); gap:1rem; padding-block:1.5rem;}
+ .document-row.has-cover {grid-template-columns:88px minmax(0,1fr);}
  .download-button {grid-column:2; justify-self:start; margin-top:.25rem;}
  .document-symbol {width:28px;}
  .document-symbol svg {width:27px;height:35px;}
